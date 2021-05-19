@@ -17,7 +17,7 @@ export class ProductsService {
     ) {}
 
     async getAll(): Promise<Product[]> {
-        return this.productModel.find().populate("choise")
+        return this.productModel.find().populate("choise").populate("category")
     }
 
     async getById(id: string): Promise<Product> {
@@ -48,7 +48,7 @@ export class ProductsService {
         } catch (err) {
             console.log({err})
         }
-        
+
     }
 
     async deleteChoise(id: string): Promise<Choise> {
