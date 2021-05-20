@@ -8,6 +8,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "heroku-postbuild": "npm run build && npm run start:prod",
     "postinstall": "npm run build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
