@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 
 import { Category } from './category.shemas';
 import { Choise } from './choise.shemas';
+import { Ingredient } from './ingredient.shemas';
 
 export type ProductDocument = Product & mongoose.Document;
 
@@ -17,8 +18,12 @@ export class Product {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Choise' }] })
   choise: Choise[];
 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }] })
+  ingredients: Ingredient[];
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
   })
   categoryId: Category;
 }

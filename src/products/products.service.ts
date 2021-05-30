@@ -8,7 +8,9 @@ import { Product, ProductDocument } from './shemas/product.shemas';
 import { CreateCategoryDto } from './dto/create-category';
 import { Category, CategoryDocument } from './shemas/category.shemas';
 import { SearchDto } from './dto/search-product.dto';
-import { Ingredient } from './shemas/ingredient.shemas';
+import { Ingredient, IngredientDocument } from './shemas/ingredient.shemas';
+import { IngredientDto } from './dto/create-ingredient.dto';
+import { AddIngredientDto } from './dto/add-ingredient.dto';
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +19,7 @@ export class ProductsService {
     @InjectModel(Choise.name) private choiseModel: Model<ChoiseDocument>,
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
     @InjectModel(Ingredient.name)
-    private ingredientModel: Model<CategoryDocument>,
+    private ingredientModel: Model<IngredientDocument>,
   ) {}
 
   async getAll(): Promise<Product[]> {
@@ -100,5 +102,32 @@ export class ProductsService {
   async createCategory(categoryDto: CreateCategoryDto): Promise<Category> {
     const newCategory = new this.categoryModel(categoryDto);
     return newCategory.save();
+  }
+
+  async createIngredient(ingredientDto: IngredientDto): Promise<Ingredient> {
+    const ingredient = new this.ingredientModel(ingredientDto);
+    await ingredient.save();
+    return ingredient;
+  }
+
+  async getIngredients(): Promise<Ingredient[]> {
+    const ingredients = await this.ingredientModel.find().exec();
+    return ingredients;
+  }
+
+  async addIngredient(addIngredientDto: AddIngredientDto): Promise<Product> {
+    try {
+      const product = await this.productModel.findById(
+        addIngredientDto.productId,
+      );
+      const ingredient = await this.ingredientModel.findById(
+        addIngredientDto.ingredientId,
+      );
+
+      product.ingredients.push(ingredient);
+      await product.save();
+
+      return product;
+    } catch (e) {}
   }
 }

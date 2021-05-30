@@ -7,6 +7,9 @@ import { SearchDto } from './dto/search-product.dto';
 import { ProductsService } from './products.service';
 import { Product } from './shemas/product.shemas';
 import { Category } from './shemas/category.shemas';
+import { Ingredient } from './shemas/ingredient.shemas';
+import { IngredientDto } from './dto/create-ingredient.dto';
+import { AddIngredientDto } from './dto/add-ingredient.dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -16,6 +19,11 @@ export class ProductsController {
   @Get('/categories')
   getCategories(): Promise<Category[]> {
     return this.productsService.getCategories();
+  }
+
+  @Get('/ingredients')
+  getIngredients(): Promise<Ingredient[]> {
+    return this.productsService.getIngredients();
   }
 
   @Post('/search')
@@ -46,6 +54,16 @@ export class ProductsController {
   @Post('/category')
   createCategory(@Body() CreateCategoryDto: CreateCategoryDto) {
     return this.productsService.createCategory(CreateCategoryDto);
+  }
+
+  @Post('/ingredients')
+  createIngredient(@Body() CreateIngredientDto: IngredientDto) {
+    return this.productsService.createIngredient(CreateIngredientDto);
+  }
+
+  @Post('/ingredients/add')
+  addIngredient(@Body() addIngredientDto: AddIngredientDto) {
+    return this.productsService.addIngredient(addIngredientDto);
   }
 
   @Get()

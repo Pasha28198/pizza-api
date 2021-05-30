@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class IngredientDto {
+export class AddIngredientDto {
   @ApiProperty({
     type: String,
   })
-  readonly name: string;
+  readonly productId: string;
 
   @ApiProperty({
-    type: Number,
+    type: String,
   })
-  readonly price: number;
+  readonly ingredientId: string;
 }

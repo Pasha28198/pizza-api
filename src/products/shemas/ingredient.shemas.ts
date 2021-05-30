@@ -9,7 +9,7 @@ export class Ingredient {
   name: string;
 
   @Prop()
-  price: string;
+  price: number;
 }
 
 export const IngredientShema = SchemaFactory.createForClass(Ingredient);
