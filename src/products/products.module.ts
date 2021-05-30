@@ -5,6 +5,7 @@ import { ProductsService } from './products.service';
 import { Category, CategoryShema } from './shemas/category.shemas';
 import { Choise, ChoiseShema } from './shemas/choise.shemas';
 import { Product, ProductShema } from './shemas/product.shemas';
+import { Ingredient, IngredientShema } from './shemas/ingredient.shemas';
 
 @Module({
   providers: [ProductsService],
@@ -14,6 +15,7 @@ import { Product, ProductShema } from './shemas/product.shemas';
       { name: Product.name, schema: ProductShema },
       { name: Choise.name, schema: ChoiseShema },
       { name: Category.name, schema: CategoryShema },
+      { name: Ingredient.name, schema: IngredientShema },
     ]),
   ],
 })

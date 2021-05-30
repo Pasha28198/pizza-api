@@ -8,6 +8,7 @@ import { Product, ProductDocument } from './shemas/product.shemas';
 import { CreateCategoryDto } from './dto/create-category';
 import { Category, CategoryDocument } from './shemas/category.shemas';
 import { SearchDto } from './dto/search-product.dto';
+import { Ingredient } from './shemas/ingredient.shemas';
 
 @Injectable()
 export class ProductsService {
@@ -15,6 +16,8 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
     @InjectModel(Choise.name) private choiseModel: Model<ChoiseDocument>,
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
+    @InjectModel(Ingredient.name)
+    private ingredientModel: Model<CategoryDocument>,
   ) {}
 
   async getAll(): Promise<Product[]> {
