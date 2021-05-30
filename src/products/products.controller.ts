@@ -11,8 +11,6 @@ import { Ingredient } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
 import { DeleteIngredientDto } from './dto/delete-ingridient';
-import { Roles } from '../decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('products')
 @Controller('products')
@@ -47,6 +45,11 @@ export class ProductsController {
   @Post()
   create(@Body() CreateProductDto: CreateProductDto) {
     return this.productsService.create(CreateProductDto);
+  }
+
+  @Delete('/ingredients/delete')
+  delete(@Body() id: string) {
+    return this.productsService.deleteProduct(id);
   }
 
   @Post('/choise')

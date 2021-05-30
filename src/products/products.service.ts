@@ -126,6 +126,13 @@ export class ProductsService {
     } catch (e) {}
   }
 
+  async deleteProduct(id: string): Promise<Product> {
+    try {
+      const product = await this.productModel.findByIdAndRemove(id);
+      return product;
+    } catch (e) {}
+  }
+
   async addIngredient(addIngredientDto: AddIngredientDto): Promise<Product> {
     try {
       const product = await this.productModel.findById(
