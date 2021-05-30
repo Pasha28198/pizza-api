@@ -11,6 +11,7 @@ import { SearchDto } from './dto/search-product.dto';
 import { Ingredient, IngredientDocument } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
+import { DeleteIngredientDto } from './dto/delete-ingridient';
 
 @Injectable()
 export class ProductsService {
@@ -125,6 +126,24 @@ export class ProductsService {
       );
 
       product.ingredients.push(ingredient);
+      await product.save();
+
+      return product;
+    } catch (e) {}
+  }
+
+  async deleteIngredient(
+    deleteIngredient: DeleteIngredientDto,
+  ): Promise<Product> {
+    try {
+      const product = await this.productModel.findById(
+        deleteIngredient.productId,
+      );
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      product.ingredients.pull({ _id: deleteIngredient.ingredientId });
+
       await product.save();
 
       return product;

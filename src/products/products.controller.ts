@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateCategoryDto } from './dto/create-category';
 import { CreateChoiseDto } from './dto/create-choise.dto';
@@ -10,6 +10,7 @@ import { Category } from './shemas/category.shemas';
 import { Ingredient } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
+import { DeleteIngredientDto } from './dto/delete-ingridient';
 
 @ApiTags('products')
 @Controller('products')
@@ -64,6 +65,11 @@ export class ProductsController {
   @Post('/ingredients/add')
   addIngredient(@Body() addIngredientDto: AddIngredientDto) {
     return this.productsService.addIngredient(addIngredientDto);
+  }
+
+  @Delete('/ingredients/delete')
+  deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {
+    return this.productsService.deleteIngredient(deleteIngredientDto);
   }
 
   @Get()

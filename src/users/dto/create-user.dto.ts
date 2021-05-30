@@ -20,4 +20,9 @@ export class CreateUserDto {
     type: String,
   })
   readonly email: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  readonly role: 'admin' | 'customer';
 }
