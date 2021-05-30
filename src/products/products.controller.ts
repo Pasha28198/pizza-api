@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, Post, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateCategoryDto } from './dto/create-category';
 import { CreateChoiseDto } from './dto/create-choise.dto';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -11,6 +11,8 @@ import { Ingredient } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
 import { DeleteIngredientDto } from './dto/delete-ingridient';
+import { Roles } from '../decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('products')
 @Controller('products')
@@ -60,6 +62,11 @@ export class ProductsController {
   @Post('/ingredients')
   createIngredient(@Body() CreateIngredientDto: IngredientDto) {
     return this.productsService.createIngredient(CreateIngredientDto);
+  }
+
+  @Delete('/ingredients')
+  deleteIngredientById(@Body() id: string) {
+    return this.productsService.deleteIngredientById(id);
   }
 
   @Post('/ingredients/add')

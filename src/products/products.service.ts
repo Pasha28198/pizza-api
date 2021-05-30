@@ -37,7 +37,10 @@ export class ProductsService {
   }
 
   async getById(id: string): Promise<Product> {
-    return this.productModel.findById(id).populate('choise');
+    return this.productModel
+      .findById(id)
+      .populate('choise')
+      .populate('ingredients');
   }
 
   async create(productDto: CreateProductDto): Promise<Product> {
@@ -114,6 +117,13 @@ export class ProductsService {
   async getIngredients(): Promise<Ingredient[]> {
     const ingredients = await this.ingredientModel.find().exec();
     return ingredients;
+  }
+
+  async deleteIngredientById(id: string): Promise<Ingredient> {
+    try {
+      const ingredient = await this.ingredientModel.findByIdAndRemove(id);
+      return ingredient;
+    } catch (e) {}
   }
 
   async addIngredient(addIngredientDto: AddIngredientDto): Promise<Product> {
