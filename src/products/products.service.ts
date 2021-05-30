@@ -24,7 +24,7 @@ export class ProductsService {
   ) {}
 
   async getAll(): Promise<Product[]> {
-    return this.productModel.find().populate('choise').populate('category');
+    return this.productModel.find().populate('choise').exec();
   }
 
   async getCategories(): Promise<Category[]> {
@@ -81,16 +81,16 @@ export class ProductsService {
     return this.productModel.findByIdAndUpdate(id, productDto, { new: true });
   }
 
-  async createChoise(choiseDto: CreateChoiseDto): Promise<Choise> {
+  async createChoise(choiseDto: CreateChoiseDto): Promise<Product> {
     try {
       const newChoise = new this.choiseModel(choiseDto);
       await newChoise.save();
-      const product = await this.productModel.findOne({
-        id: newChoise.product,
-      });
+
+      const product = await this.productModel.findById(choiseDto.product);
+
       product.choise.push(newChoise);
       await product.save();
-      return newChoise;
+      return product;
     } catch (err) {
       console.log({ err });
     }
