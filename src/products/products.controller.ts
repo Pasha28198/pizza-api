@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Param, Patch, Post, Delete, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 import { CreateCategoryDto } from './dto/create-category';
 import { CreateChoiseDto } from './dto/create-choise.dto';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -76,6 +78,12 @@ export class ProductsController {
   addIngredient(@Body() addIngredientDto: AddIngredientDto) {
     return this.productsService.addIngredient(addIngredientDto);
   }
+
+  // @Post('/image')
+  // @UseInterceptors(FileInterceptor('file'))
+  // uploadImg(@UploadedFile() file: Express.Multer.File) {
+  //   return this.productsService.uploadImage(file);
+  // }
 
   @Delete('/ingredients/delete')
   deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {

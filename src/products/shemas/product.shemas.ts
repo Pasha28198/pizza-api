@@ -26,6 +26,12 @@ export class Product {
     ref: 'Category',
   })
   categoryId: Category;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  })
+  img: Category;
 }
 
 export const ProductShema = SchemaFactory.createForClass(Product);

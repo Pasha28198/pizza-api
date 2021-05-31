@@ -69,7 +69,10 @@ export class ProductsService {
 
   async searchProducts(searchBody: SearchDto): Promise<Product[]> {
     try {
-      const products = await this.productModel.find({ ...searchBody }).exec();
+      const products = await this.productModel.find({ ...searchBody })
+        .populate('choise')
+        .populate('ingredients')
+        .exec();
       return products;
     } catch (e) {
       throw new BadRequestException('not valid filters');
@@ -147,6 +150,11 @@ export class ProductsService {
 
       return product;
     } catch (e) {}
+  }
+
+  async uploadImage(): Promise<any> {
+
+    return false;
   }
 
   async deleteIngredient(
