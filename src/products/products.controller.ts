@@ -108,7 +108,8 @@ export class ProductsController {
           file: Express.Multer.File,
           callback: (error: Error | null, filename: string) => void,
         ) {
-          const filename: string = path(file.originalname).name.replace(/\s/g, '') + uuidv4();
+          const filename: string =
+            path(file.originalname).name.replace(/\s/g, '') + uuidv4();
           console.log(filename);
 
           callback(null, `${filename}${path(file.originalname).ext}`);

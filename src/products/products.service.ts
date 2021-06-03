@@ -70,7 +70,8 @@ export class ProductsService {
 
   async searchProducts(searchBody: SearchDto): Promise<Product[]> {
     try {
-      const products = await this.productModel.find({ ...searchBody })
+      const products = await this.productModel
+        .find({ ...searchBody })
         .populate('choise')
         .populate('ingredients')
         .exec();
@@ -104,15 +105,23 @@ export class ProductsService {
   }
 
   async deleteChoise(deleteChoiseDto: DeleteChoiseDto): Promise<Choise> {
-    const choise = await this.choiseModel.findByIdAndRemove(deleteChoiseDto.id);
+    try {
+      const choise = await this.choiseModel.findByIdAndRemove(
+        deleteChoiseDto.id,
+      );
 
-    const product = await this.productModel.findById(choise.productId);
+      console.log(choise);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    product.choise.pull({ _id: deleteChoiseDto.id });
+      const product = await this.productModel.findById(choise.productId);
 
-    return choise;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      product.choise.pull({ _id: deleteChoiseDto.id });
+
+      return choise;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async createCategory(categoryDto: CreateCategoryDto): Promise<Category> {
@@ -162,8 +171,7 @@ export class ProductsService {
   }
 
   async uploadImage(path: string, productId: string): Promise<Product> {
-
-    console.log({ path })
+    console.log({ path });
 
     const product = await this.productModel
       .findByIdAndUpdate(productId, {
