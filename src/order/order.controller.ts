@@ -23,7 +23,7 @@ export class OrderController {
     return this.orderService.deleteOrderById(id);
   }
 
-  @Delete('/price')
+  @Post('/price')
   deleteOrderPrice(@Body() getOrderPriceDto: GetOrderPriceDto) {
     return this.orderService.getOrderPrice(getOrderPriceDto);
   }

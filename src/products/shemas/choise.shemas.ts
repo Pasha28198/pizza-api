@@ -15,7 +15,7 @@ export class Choise {
   @Prop()
   price: number;
 
-  @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' } })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Product' })
   productId: Product;
 }
 
