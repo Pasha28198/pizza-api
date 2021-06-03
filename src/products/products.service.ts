@@ -12,6 +12,7 @@ import { Ingredient, IngredientDocument } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
 import { DeleteIngredientDto } from './dto/delete-ingridient';
+import { DeleteChoiseDto } from './dto/delete-choise.dto';
 
 @Injectable()
 export class ProductsService {
@@ -92,7 +93,7 @@ export class ProductsService {
       const newChoise = new this.choiseModel(choiseDto);
       await newChoise.save();
 
-      const product = await this.productModel.findById(choiseDto.product);
+      const product = await this.productModel.findById(choiseDto.productId);
 
       product.choise.push(newChoise);
       await product.save();
@@ -102,8 +103,16 @@ export class ProductsService {
     }
   }
 
-  async deleteChoise(id: string): Promise<Choise> {
-    return this.choiseModel.findByIdAndRemove(id);
+  async deleteChoise(deleteChoiseDto: DeleteChoiseDto): Promise<Choise> {
+    const choise = await this.choiseModel.findByIdAndRemove(deleteChoiseDto.id);
+
+    const product = await this.productModel.findById(choise.productId);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    product.choise.pull({ _id: deleteChoiseDto.id });
+
+    return choise;
   }
 
   async createCategory(categoryDto: CreateCategoryDto): Promise<Category> {
@@ -152,9 +161,17 @@ export class ProductsService {
     } catch (e) {}
   }
 
-  async uploadImage(): Promise<any> {
+  async uploadImage(path: string, productId: string): Promise<Product> {
 
-    return false;
+    console.log({ path })
+
+    const product = await this.productModel
+      .findByIdAndUpdate(productId, {
+        img: path,
+      })
+      .exec();
+
+    return product;
   }
 
   async deleteIngredient(

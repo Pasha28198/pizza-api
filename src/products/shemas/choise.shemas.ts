@@ -16,7 +16,7 @@ export class Choise {
   price: number;
 
   @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' } })
-  product: Product;
+  productId: Product;
 }
 
 export const ChoiseShema = SchemaFactory.createForClass(Choise);

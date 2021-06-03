@@ -4,7 +4,7 @@ export class CreateChoiseDto {
   @ApiProperty({
     type: String,
   })
-  readonly product: string;
+  readonly productId: string;
 
   @ApiProperty({
     type: String,

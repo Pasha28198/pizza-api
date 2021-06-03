@@ -1,4 +1,16 @@
-import { Body, Controller, Get, Param, Patch, Post, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
+import path from 'path-parse';
+import { v4 as uuidv4 } from 'uuid';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -13,6 +25,8 @@ import { Ingredient } from './shemas/ingredient.shemas';
 import { IngredientDto } from './dto/create-ingredient.dto';
 import { AddIngredientDto } from './dto/add-ingredient.dto';
 import { DeleteIngredientDto } from './dto/delete-ingridient';
+import { diskStorage } from 'multer';
+import { DeleteChoiseDto } from './dto/delete-choise.dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -59,6 +73,11 @@ export class ProductsController {
     return this.productsService.createChoise(CreateChoiseDto);
   }
 
+  @Delete('/choise')
+  deleteChoise(@Body() DeleteChoiseDto: DeleteChoiseDto) {
+    return this.productsService.deleteChoise(DeleteChoiseDto);
+  }
+
   @Post('/category')
   createCategory(@Body() CreateCategoryDto: CreateCategoryDto) {
     return this.productsService.createCategory(CreateCategoryDto);
@@ -79,11 +98,30 @@ export class ProductsController {
     return this.productsService.addIngredient(addIngredientDto);
   }
 
-  // @Post('/image')
-  // @UseInterceptors(FileInterceptor('file'))
-  // uploadImg(@UploadedFile() file: Express.Multer.File) {
-  //   return this.productsService.uploadImage(file);
-  // }
+  @Post('/image')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/products',
+        filename(
+          req: any,
+          file: Express.Multer.File,
+          callback: (error: Error | null, filename: string) => void,
+        ) {
+          const filename: string = path(file.originalname).name.replace(/\s/g, '') + uuidv4();
+          console.log(filename);
+
+          callback(null, `${filename}${path(file.originalname).ext}`);
+        },
+      }),
+    }),
+  )
+  uploadImg(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() productId: string,
+  ) {
+    return this.productsService.uploadImage(file.path, productId);
+  }
 
   @Delete('/ingredients/delete')
   deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {

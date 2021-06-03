@@ -12,9 +12,9 @@ import { Ingredient, IngredientShema } from './shemas/ingredient.shemas';
   controllers: [ProductsController],
   imports: [
     MongooseModule.forFeature([
-      { name: Product.name, schema: ProductShema },
       { name: Choise.name, schema: ChoiseShema },
       { name: Category.name, schema: CategoryShema },
+      { name: Product.name, schema: ProductShema },
       { name: Ingredient.name, schema: IngredientShema },
     ]),
   ],
