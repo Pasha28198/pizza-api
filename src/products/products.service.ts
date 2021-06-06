@@ -25,7 +25,17 @@ export class ProductsService {
   ) {}
 
   async getAll(): Promise<Product[]> {
-    return this.productModel.find().populate('choise').exec();
+    return this.productModel
+      .find()
+      .populate('choise')
+      .populate({
+        path: 'ingredients',
+        populate: {
+          path: 'ingredient',
+          model: 'Ingredient',
+        },
+      })
+      .exec();
   }
 
   async getCategories(): Promise<Category[]> {
@@ -193,9 +203,9 @@ export class ProductsService {
   ): Promise<Product> {
     try {
       console.log(deleteIngredient.productId);
-      const product = await this.productModel.findById(
-        deleteIngredient.productId,
-      ).populate('ingredients');
+      const product = await this.productModel
+        .findById(deleteIngredient.productId)
+        .populate('ingredients');
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
