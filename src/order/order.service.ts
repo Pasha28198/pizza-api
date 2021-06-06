@@ -22,15 +22,27 @@ export class OrderService {
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
-    const order = new this.orderModel(createOrderDto);
+    const { price } = await this.getOrderPrice({
+      products: createOrderDto.products,
+    });
 
+    const order = new this.orderModel({
+      ...createOrderDto,
+      price,
+    });
     await order.save();
 
     return order;
   }
 
   async getOrderList(): Promise<Order[]> {
-    const orders = await this.orderModel.find();
+    const orders = await this.orderModel.find().populate({
+      path: 'products',
+      populate: {
+        path: 'ingredients',
+        model: 'Ingredient',
+      },
+    });
 
     return orders;
   }
@@ -43,8 +55,10 @@ export class OrderService {
       const choise = await this.choiseModel.findById(product.choise);
       if (!choise) continue;
 
+      console.log({ choise });
+
       if (!product.ingredients.length) {
-        price = price + choise.price * product.quantity;
+        price = (price + choise.price) * product.quantity;
       } else {
         price =
           price +
@@ -72,22 +86,21 @@ export class OrderService {
     ingredients: Array<string>,
   ): Promise<number> {
     try {
-      const defaultIngredient = doPriceFormat(
-        (
-          await this.productModel
-            .findById(choise.productId)
-            .populate('ingredients')
-        ).ingredients,
-      );
+      const countIngredients = doCountFormat(ingredients);
       const extraIngredients = doPriceFormat(
         await this.ingredientModel.find({
           _id: { $in: ingredients },
         }),
       );
 
-      console.log({ defaultIngredient, extraIngredients });
-
-      return 0;
+      return (
+        Number(choise.price) +
+        Object.keys(extraIngredients).reduce(
+          (prev, curr) =>
+            Number(extraIngredients[curr]) * Number(countIngredients[curr]),
+          0,
+        )
+      );
     } catch (e) {
       console.log(e);
     }
@@ -97,6 +110,13 @@ export class OrderService {
 function doPriceFormat(ingredients: any & { _id: string }) {
   return ingredients.reduce(
     (prev, current) => ({ ...prev, [current._id]: current.price }),
+    {},
+  );
+}
+
+function doCountFormat(ingredients: any & { _id: string }) {
+  return ingredients.reduce(
+    (prev, current) => ({ ...prev, [current._id]: current.count }),
     {},
   );
 }

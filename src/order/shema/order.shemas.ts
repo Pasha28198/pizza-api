@@ -61,11 +61,18 @@ export class Order {
       {
         quantity: { type: Number },
         choise: { type: mongoose.Schema.Types.ObjectId },
-        ingredients: { type: [{ type: mongoose.Schema.Types.ObjectId }] },
+        ingredients: {
+          type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
+        },
       },
     ],
   })
   products: { quantity: number; choise: Choise; ingredients: Ingredient[] }[];
+
+  @Prop({
+    type: Number,
+  })
+  price: number;
 }
 
 export const OrderShema = SchemaFactory.createForClass(Order);
