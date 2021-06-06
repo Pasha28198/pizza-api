@@ -9,7 +9,8 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import path from 'path-parse';
+// import pathParse from 'path-parse';
+import { parse } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -106,7 +107,20 @@ export class ProductsController {
   @Post('/image')
   @UseInterceptors(
     FileInterceptor('photo', {
-      dest: './uploads',
+      storage: diskStorage({
+        destination: './uploads',
+        filename(
+          req: any,
+          file: Express.Multer.File,
+          callback: (error: Error | null, filename: string) => void,
+        ) {
+          const fileName: string =
+            parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+          const extention: string = parse(file.originalname).ext;
+
+          callback(null, `${fileName}${extention}`);
+        },
+      }),
     }),
   )
   uploadImg(
@@ -114,6 +128,7 @@ export class ProductsController {
     @Body() productId: string,
   ) {
     console.log(file);
+    return file;
     // return this.productsService.uploadImage(file.path, productId);
   }
 

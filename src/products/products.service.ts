@@ -89,7 +89,13 @@ export class ProductsService {
       const products = await this.productModel
         .find({ ...searchBody })
         .populate('choise')
-        .populate('ingredients')
+        .populate({
+          path: 'ingredients',
+          populate: {
+            path: 'ingredient',
+            model: 'Ingredient',
+          },
+        })
         .exec();
       return products;
     } catch (e) {

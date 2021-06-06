@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
@@ -8,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
-import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -20,8 +21,8 @@ import { MulterModule } from '@nestjs/platform-express';
         authSource: 'admin',
       },
     ),
-    MulterModule.register({
-      dest: './uploads',
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
     }),
     OrderModule,
     AuthModule,
