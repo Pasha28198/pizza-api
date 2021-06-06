@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -19,6 +20,9 @@ import { RolesGuard } from './guards/roles.guard';
         authSource: 'admin',
       },
     ),
+    MulterModule.register({
+      dest: './uploads',
+    }),
     OrderModule,
     AuthModule,
     UsersModule,

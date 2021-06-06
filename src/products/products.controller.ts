@@ -105,28 +105,16 @@ export class ProductsController {
 
   @Post('/image')
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/products',
-        filename(
-          req: any,
-          file: Express.Multer.File,
-          callback: (error: Error | null, filename: string) => void,
-        ) {
-          const filename: string =
-            path(file.originalname).name.replace(/\s/g, '') + uuidv4();
-          console.log(filename);
-
-          callback(null, `${filename}${path(file.originalname).ext}`);
-        },
-      }),
+    FileInterceptor('photo', {
+      dest: './uploads',
     }),
   )
   uploadImg(
     @UploadedFile() file: Express.Multer.File,
     @Body() productId: string,
   ) {
-    return this.productsService.uploadImage(file.path, productId);
+    console.log(file);
+    // return this.productsService.uploadImage(file.path, productId);
   }
 
   @Get()

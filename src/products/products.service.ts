@@ -51,7 +51,13 @@ export class ProductsService {
     return this.productModel
       .findById(id)
       .populate('choise')
-      .populate('ingredients');
+      .populate({
+        path: 'ingredients',
+        populate: {
+          path: 'ingredient',
+          model: 'Ingredient',
+        },
+      });
   }
 
   async create(productDto: CreateProductDto): Promise<Product> {
