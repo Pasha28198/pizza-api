@@ -114,9 +114,10 @@ export class ProductsController {
           file: Express.Multer.File,
           callback: (error: Error | null, filename: string) => void,
         ) {
+          const parsedFile = parse(file.originalname);
           const fileName: string =
-            parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-          const extention: string = parse(file.originalname).ext;
+            parsedFile?.name.replace(/\s/g, '') + uuidv4();
+          const extention: string = parsedFile?.ext;
 
           callback(null, `${fileName}${extention}`);
         },
@@ -125,11 +126,9 @@ export class ProductsController {
   )
   uploadImg(
     @UploadedFile() file: Express.Multer.File,
-    @Body() productId: string,
+    @Body() { productId }: { [key: string]: string },
   ) {
-    console.log(file);
-    return file;
-    // return this.productsService.uploadImage(file.path, productId);
+    return this.productsService.uploadImage(`/${file.filename}`, productId);
   }
 
   @Get()

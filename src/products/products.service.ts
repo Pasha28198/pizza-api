@@ -198,12 +198,18 @@ export class ProductsService {
     }
   }
 
-  async uploadImage(path: string, productId: string): Promise<Product> {
-    console.log({ path });
-
+  async uploadImage(pathFile: string, productId: string): Promise<Product> {
     const product = await this.productModel
       .findByIdAndUpdate(productId, {
-        img: path,
+        img: pathFile,
+      })
+      .populate('choise')
+      .populate({
+        path: 'ingredients',
+        populate: {
+          path: 'ingredient',
+          model: 'Ingredient',
+        },
       })
       .exec();
 
@@ -217,15 +223,21 @@ export class ProductsService {
       console.log(deleteIngredient.productId);
       const product = await this.productModel
         .findById(deleteIngredient.productId)
-        .populate('ingredients');
+        .populate({
+          path: 'ingredients',
+          populate: {
+            path: 'ingredient',
+            model: 'Ingredient',
+          },
+        });
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      // product.ingredients.pull({
-      //   ingredient: { _id: deleteIngredient.ingredientId },
-      // });
-      //
-      // await product.save();
+      // @ts-ignore
+      product.ingredients.pull({
+        ingredient: { _id: deleteIngredient.ingredientId },
+      });
+
+      await product.save();
 
       console.log(product);
 
