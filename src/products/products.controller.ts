@@ -64,18 +64,23 @@ export class ProductsController {
   }
 
   @Delete('/ingredients/delete')
-  delete(@Body() id: string) {
-    return this.productsService.deleteProduct(id);
+  deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {
+    return this.productsService.deleteIngredient(deleteIngredientDto);
   }
 
-  @Post('/choise')
-  createChoise(@Body() CreateChoiseDto: CreateChoiseDto) {
-    return this.productsService.createChoise(CreateChoiseDto);
+  @Delete('/ingredients/delete')
+  delete(@Body() id: string) {
+    return this.productsService.deleteProduct(id);
   }
 
   @Delete('/choise')
   deleteChoise(@Body() DeleteChoiseDto: DeleteChoiseDto) {
     return this.productsService.deleteChoise(DeleteChoiseDto);
+  }
+
+  @Post('/choise')
+  createChoise(@Body() CreateChoiseDto: CreateChoiseDto) {
+    return this.productsService.createChoise(CreateChoiseDto);
   }
 
   @Post('/category')
@@ -122,11 +127,6 @@ export class ProductsController {
     @Body() productId: string,
   ) {
     return this.productsService.uploadImage(file.path, productId);
-  }
-
-  @Delete('/ingredients/delete')
-  deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {
-    return this.productsService.deleteIngredient(deleteIngredientDto);
   }
 
   @Get()

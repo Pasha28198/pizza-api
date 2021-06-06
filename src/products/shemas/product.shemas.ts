@@ -18,8 +18,23 @@ export class Product {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Choise' }] })
   choise: Choise[];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }] })
-  ingredients: Ingredient[];
+  @Prop({
+    type: [
+      {
+        ingredient: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Ingredient',
+        },
+        count: {
+          type: Number,
+        },
+      },
+    ],
+  })
+  ingredients: {
+    ingredient: Ingredient;
+    count: number;
+  }[];
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

@@ -10,4 +10,9 @@ export class AddIngredientDto {
     type: String,
   })
   readonly ingredientId: string;
+
+  @ApiProperty({
+    type: Number,
+  })
+  readonly count: number;
 }

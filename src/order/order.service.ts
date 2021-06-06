@@ -71,20 +71,32 @@ export class OrderService {
     choise: Choise,
     ingredients: Array<string>,
   ): Promise<number> {
-    console.log(choise);
     try {
-      // const {
-      //   ingredients: defaultIngredient,
-      // } = await this.productModel
-      //   .findById(choise.productId)
-      //   .populate('ingredients');
-      const extraIngredients = await this.ingredientModel.find({
-        _id: { $in: ingredients },
-      });
+      const defaultIngredient = doPriceFormat(
+        (
+          await this.productModel
+            .findById(choise.productId)
+            .populate('ingredients')
+        ).ingredients,
+      );
+      const extraIngredients = doPriceFormat(
+        await this.ingredientModel.find({
+          _id: { $in: ingredients },
+        }),
+      );
+
+      console.log({ defaultIngredient, extraIngredients });
 
       return 0;
     } catch (e) {
       console.log(e);
     }
   }
+}
+
+function doPriceFormat(ingredients: any & { _id: string }) {
+  return ingredients.reduce(
+    (prev, current) => ({ ...prev, [current._id]: current.price }),
+    {},
+  );
 }

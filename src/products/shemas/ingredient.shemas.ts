@@ -10,6 +10,7 @@ export class Ingredient {
 
   @Prop()
   price: number;
+  _id: any;
 }
 
 export const IngredientShema = SchemaFactory.createForClass(Ingredient);

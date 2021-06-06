@@ -163,11 +163,17 @@ export class ProductsService {
         addIngredientDto.ingredientId,
       );
 
-      product.ingredients.push(ingredient);
+      product.ingredients.push({
+        ingredient: ingredient,
+        count: addIngredientDto.count,
+      });
+
       await product.save();
 
       return product;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async uploadImage(path: string, productId: string): Promise<Product> {
@@ -186,17 +192,24 @@ export class ProductsService {
     deleteIngredient: DeleteIngredientDto,
   ): Promise<Product> {
     try {
+      console.log(deleteIngredient.productId);
       const product = await this.productModel.findById(
         deleteIngredient.productId,
-      );
+      ).populate('ingredients');
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
-      product.ingredients.pull({ _id: deleteIngredient.ingredientId });
+      // product.ingredients.pull({
+      //   ingredient: { _id: deleteIngredient.ingredientId },
+      // });
+      //
+      // await product.save();
 
-      await product.save();
+      console.log(product);
 
       return product;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
