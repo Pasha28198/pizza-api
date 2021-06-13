@@ -52,7 +52,7 @@ export class OrderService {
           path: 'choise',
           model: 'Choise',
         },
-      })
+      });
 
     return orders;
   }
@@ -64,8 +64,6 @@ export class OrderService {
     for await (const product of getOrderPriceDto.products) {
       const choise = await this.choiseModel.findById(product.choise);
       if (!choise) continue;
-
-      console.log({ choise });
 
       if (!product.ingredients.length) {
         price = (price + choise.price) * product.quantity;
@@ -107,6 +105,7 @@ export class OrderService {
         Number(choise.price) +
         Object.keys(extraIngredients).reduce(
           (prev, curr) =>
+            prev +
             Number(extraIngredients[curr]) * Number(countIngredients[curr]),
           0,
         )
