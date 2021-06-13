@@ -9,6 +9,9 @@ export class Ingredient {
   name: string;
 
   @Prop()
+  mass: number;
+
+  @Prop()
   price: number;
   _id: any;
 }

@@ -9,5 +9,10 @@ export class IngredientDto {
   @ApiProperty({
     type: Number,
   })
+  readonly mass: number;
+
+  @ApiProperty({
+    type: Number,
+  })
   readonly price: number;
 }
