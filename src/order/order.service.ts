@@ -36,13 +36,23 @@ export class OrderService {
   }
 
   async getOrderList(): Promise<Order[]> {
-    const orders = await this.orderModel.find().populate({
-      path: 'products',
-      populate: {
-        path: 'ingredients',
-        model: 'Ingredient',
-      },
-    });
+    const orders = await this.orderModel
+      .find()
+      .populate({
+        path: 'products',
+        populate: {
+          path: 'ingredients',
+          model: 'Ingredient',
+        },
+      })
+      .populate('choise')
+      .populate({
+        path: 'products',
+        populate: {
+          path: 'choise',
+          model: 'Choise',
+        },
+      })
 
     return orders;
   }
