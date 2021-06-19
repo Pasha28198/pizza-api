@@ -11,11 +11,15 @@ import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
 
+//test db
+// `mongodb+srv://admin:adminadmin@cluster0.md3tt.mongodb.net/pizza?retryWrites=true&w=majority`,
+
+
 @Module({
   imports: [
     ProductsModule,
     MongooseModule.forRoot(
-      `mongodb+srv://admin:adminadmin@cluster0.md3tt.mongodb.net/pizza?retryWrites=true&w=majority`,
+      `mongodb+srv://pizza_admin:Dirtydjeck1@pizza.wgd9u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
       {
         ssl: true,
         authSource: 'admin',
