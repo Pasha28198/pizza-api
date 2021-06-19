@@ -7,7 +7,7 @@ import {
   Post,
   Delete,
   UseInterceptors,
-  UploadedFile,
+  UploadedFile, UseGuards,
 } from '@nestjs/common';
 // import pathParse from 'path-parse';
 import { parse } from 'path';
@@ -28,6 +28,7 @@ import { AddIngredientDto } from './dto/add-ingredient.dto';
 import { DeleteIngredientDto } from './dto/delete-ingridient';
 import { diskStorage } from 'multer';
 import { DeleteChoiseDto } from './dto/delete-choise.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('products')
 @Controller('products')
@@ -54,56 +55,67 @@ export class ProductsController {
     return this.productsService.getById(params.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   updateProduct(@Param() params, @Body() CreateProductDto: CreateProductDto) {
     return this.productsService.update(params.id, CreateProductDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() CreateProductDto: CreateProductDto) {
     return this.productsService.create(CreateProductDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/ingredients/delete')
   deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {
     return this.productsService.deleteIngredient(deleteIngredientDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/ingredients/delete')
   delete(@Body() id: string) {
     return this.productsService.deleteProduct(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/choise')
   deleteChoise(@Body() DeleteChoiseDto: DeleteChoiseDto) {
     return this.productsService.deleteChoise(DeleteChoiseDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/choise')
   createChoise(@Body() CreateChoiseDto: CreateChoiseDto) {
     return this.productsService.createChoise(CreateChoiseDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/category')
   createCategory(@Body() CreateCategoryDto: CreateCategoryDto) {
     return this.productsService.createCategory(CreateCategoryDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/ingredients')
   createIngredient(@Body() CreateIngredientDto: IngredientDto) {
     return this.productsService.createIngredient(CreateIngredientDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/ingredients')
   deleteIngredientById(@Body() id: string) {
     return this.productsService.deleteIngredientById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/ingredients/add')
   addIngredient(@Body() addIngredientDto: AddIngredientDto) {
     return this.productsService.addIngredient(addIngredientDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/image')
   @UseInterceptors(
     FileInterceptor('photo', {

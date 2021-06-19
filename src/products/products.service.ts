@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as fs from 'fs';
+import { join } from 'path';
 import { CreateProductDto } from './dto/create-product.dto';
 import { CreateChoiseDto } from './dto/create-choise.dto';
 import { Choise, ChoiseDocument } from './shemas/choise.shemas';
@@ -199,6 +201,12 @@ export class ProductsService {
   }
 
   async uploadImage(pathFile: string, productId: string): Promise<Product> {
+    const { img } = await this.productModel.findById(productId);
+
+    try {
+      await fs.unlinkSync(`${join(__dirname, '../..', 'uploads')}${img}`);
+    } catch (e) {}
+
     const product = await this.productModel
       .findByIdAndUpdate(productId, {
         img: pathFile,
