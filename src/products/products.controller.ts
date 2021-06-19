@@ -108,7 +108,7 @@ export class ProductsController {
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
-        destination: '/www/pizza-api/uploads',
+        destination: 'uploads/',
         filename(
           req: any,
           file: Express.Multer.File,
