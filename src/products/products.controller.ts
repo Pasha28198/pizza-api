@@ -73,11 +73,11 @@ export class ProductsController {
     return this.productsService.deleteIngredient(deleteIngredientDto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Delete('/ingredients/delete')
-  delete(@Body() id: string) {
-    return this.productsService.deleteProduct(id);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Delete('/ingredients/delete')
+  // delete(@Body() id: string) {
+  //   return this.productsService.deleteProduct(id);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/choise')
