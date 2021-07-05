@@ -67,7 +67,7 @@ export class ProductsController {
     return this.productsService.create(CreateProductDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete('/ingredients/delete')
   deleteIngredient(@Body() deleteIngredientDto: DeleteIngredientDto) {
     return this.productsService.deleteIngredient(deleteIngredientDto);

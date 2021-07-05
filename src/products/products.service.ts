@@ -242,7 +242,7 @@ export class ProductsService {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       product.ingredients.pull({
-        ingredient: { _id: deleteIngredient.ingredientId },
+        _id: deleteIngredient.ingredientId,
       });
 
       await product.save();
